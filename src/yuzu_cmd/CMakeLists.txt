@@ -81,3 +81,9 @@ if (NOT MSVC)
         $<$<COMPILE_LANGUAGE:C,CXX>:-Wno-unused-parameter>
         $<$<COMPILE_LANGUAGE:C,CXX>:-Wno-missing-field-initializers>)
 endif()
+
+# clang-cl 19 rejects the GetProcAddress casts under -Werror=extra; a per-source option lands after it
+if (CXX_CLANG)
+    set_source_files_properties(nx2_sampler.cpp yuzu.cpp PROPERTIES
+        COMPILE_OPTIONS "-Wno-cast-function-type-mismatch")
+endif()

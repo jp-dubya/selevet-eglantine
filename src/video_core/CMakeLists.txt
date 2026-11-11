@@ -481,6 +481,12 @@ if (MSVC)
         /we4242 # 'identifier': conversion from 'type1' to 'type2', possible loss of data
         /we4244 # 'conversion': conversion from 'type1' to 'type2', possible loss of data
     )
+    if (CXX_CLANG)
+        # clang-cl 19 rejects the GetProcAddress casts in streamline.cpp under -Werror=extra. Only
+        # a per-source option lands after that flag on the command line.
+        set_source_files_properties(vulkan_common/streamline.cpp PROPERTIES
+            COMPILE_OPTIONS "-Wno-cast-function-type-mismatch")
+    endif()
 else()
     if (APPLE)
         # error: declaration shadows a typedef in 'interval_base_set<SubType, DomainT, Compare, Interval, Alloc>'
